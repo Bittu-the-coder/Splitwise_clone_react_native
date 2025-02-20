@@ -9,6 +9,7 @@ import {
   Modal,
   TextInput,
   Button,
+  ToastAndroid,
 } from "react-native";
 import GroupCard from "../components/ui/GroupCard";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
@@ -72,7 +73,7 @@ export default function GroupsScreen() {
       return;
     }
 
-    const newGroup = { name: groupName, image: groupImage };
+    const newGroup = { id: Date.now(), name: groupName, image: groupImage }; // Add unique ID
     const updatedGroups = [...groups, newGroup];
 
     setGroups(updatedGroups);
@@ -80,6 +81,25 @@ export default function GroupsScreen() {
     setGroupName("");
     setGroupImage(null);
     setModalVisible(false);
+  };
+
+  // Function to remove a group
+  const removeGroup = (groupId) => {
+    Alert.alert("Remove Group", "Are you sure you want to remove this group?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Remove",
+        onPress: () => {
+          const updatedGroups = groups.filter((group) => group.id !== groupId); // Use ID for filtering
+          setGroups(updatedGroups);
+          saveGroups(updatedGroups);
+          ToastAndroid.show("Group removed!", ToastAndroid.SHORT);
+        },
+      },
+    ]);
   };
 
   return (
@@ -106,12 +126,13 @@ export default function GroupsScreen() {
 
         {/* Render Groups */}
         <View style={{ gap: 8 }}>
-          {groups.map((group, index) => (
+          {groups.map((group) => (
             <GroupCard
-              key={index}
+              key={group.id} // Use unique ID as key
               title={group.name}
-              expense={index * 100}
+              expense={100} // Replace with actual expense logic
               imageUri={group.image}
+              onLongPress={() => removeGroup(group.id)} // Pass group ID
             />
           ))}
         </View>

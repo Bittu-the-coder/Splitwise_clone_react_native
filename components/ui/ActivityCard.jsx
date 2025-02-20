@@ -16,7 +16,7 @@ export default function ActivityCard({
               width: "100%",
               backgroundColor: "lightgray",
             }}
-            source={require("../../assets/image.png")}
+            source={require("../../assets/image.webp")}
           />
         </View>
         <View
@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "center",
     gap: 16,
   },
   itemImage: {
-    height: 45,
-    width: 45,
+    height: 60,
+    width: 60,
   },
 });
